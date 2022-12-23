@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {{template "general/header"}}
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+  <div
+    class="flex flex-col w-screen h-screen overflow-auto text-gray-700 bg-gradient-to-tr from-blue-200 via-indigo-200 to-pink-200">
+    <div class="flex items-center flex-shrink-0 w-full h-16 px-10 bg-white bg-opacity-75">
+      <svg class="w-8 h-8 text-indigo-600 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+      </svg>
+      <div class="flex items-center justify-center w-8 h-8 ml-auto">
+        <a href="/logout" method="post">
+          <buton class="flex items-center justify-center w-8 h-8 ml-auto cursor-pointer font-bold">
+            Logout
+          </buton>
+        </a>
+      </div>
+    </div>
+    <div class="px-10 mt-6">
+      <h1 class="text-2xl font-bold mb-5">KANBAN APP</h1>
+      <div class="flex leading-9">
+        <div class="w-10/12 grid grid-cols-2 gap-4">
+          {{ range $index, $element := .categories }}
+          <div class="max-w-sm rounded  bg-white-800">
+            <div class="px-6 py-4">
+              <div class="font-bold text-md mb-2 flex justify-between">
+                <div>{{ $element.Type }}</div>
+                <div>
+                  <a href="/task/add?category_id={{ $element.ID }}"
+                    class="inline-block w-9 h-9 bg-blue-800 text-white rounded-md text-center mr-1 hover:bg-slate-500">+</a>
+                  <a href="/category/delete?category_id={{ $element.ID }}"
+                    class="inline-block w-9 h-9 bg-yellow-800 text-white rounded-md text-center hover:bg-slate-500">x</a>
+                </div>
+                <div>
+                  {{ range $index, $task := $element.Tasks }}
+                  <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                          <th scope="col" class="py-3 px-6">
+                            title
+                          </th>
+                          <th scope="col" class="py-3 px-6">
+                            description
+                          </th>
+                          <th scope="col" class="py-3 px-6">
+                            Action
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{$task.Title}}
+                          </th>
+                          <td class="py-4 px-6">
+                            {{ $task.Description }}
+                          </td>
+                          <td class="py-4 px-6">
+                            <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">delete</a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  {{ end }}
+                </div>
+              </div>
+              {{ range $index, $task := $element.Tasks }}
+              <div class="max-w-sm rounded overflow-hidden shadow-lg border border-teal-600 mb-3">
+                <div class="flex justify-between leading-3 relative">
+                  <a href="/task/update?task_id={{ $task.ID }}"
+                    class="inline-block bg-slate-500 w-full px-3 py-1 mr-2 text-sm font-bold text-white hover:underline underline-offset-2 hover:text-gray-900">Web</a>
+                  <a href="/task/delete?task_id={{ $task.ID }}"
+                    class="flex bg-rose-900 text-white px-3 py-0 text-center items-center absolute top-0 bottom-0 right-0 hover:bg-gray-900">x</a>
+                </div>
+
+                <hr class="border-1 border-teal-600" />
+                <span class="block rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                  {{ $task.Description }}</span>
+              </div>
+              {{ end }}
+            </div>
+          </div>
+          {{ end }}
+        </div>
+        <div class="w-2/12 ml-5">
+          <a href="/category/add" class="bg-blue-500 text-white rounded-md px-4 py-2">add Category</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
